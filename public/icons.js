@@ -1,0 +1,1 @@
+export const deleteIcon=require('delete.svg');

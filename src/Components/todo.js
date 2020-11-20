@@ -1,32 +1,33 @@
 import React from "react";
 import { Button } from "antd";
 import "./App.css";
-
 const App = () => {
   let [todo, setTodo] = React.useState([
-    { id: 1, content: "firstContent", completed: false },
-    { id: 2, content: "Secondcontent", completed: false },
+    { id: 1, content: "firstContent" ,completed:false},
+    { id: 2, content: "Secondcontent",completed:false },
   ]);
 
   const newTodo = {
     id: todo.length + 1,
     content: "",
-    completed: false,
+    completed:false
   };
 
   const handleChange = (event) => {
     newTodo.content = event.target.value;
+    
   };
 
-  const completeHandler = (index) => {
-    const todoCpy = [...todo];
-    todoCpy[index].completed = !todoCpy[index].completed;
-    setTodo(todoCpy);
-  };
+  // const completeHandler=(todonew)=>{
+  //   const todoCpy=[...todo];
+  //   const changedTodo=todoCpy.find(eachTodo=>eachTodo.id===todonew.id);
+  //   changedTodo.completed=!changedTodo.completed
+  //   setTodo([...todo,changedTodo])
+  // }
 
   const clickHandler = () => {
     setTodo([...todo, newTodo]);
-    console.log(todo);
+    console.log(todo)
   };
 
   const deleteHandler = (id) => {
@@ -50,15 +51,7 @@ const App = () => {
                 justifyContent: "space-around",
               }}
             >
-              <li
-                style={{
-                  textDecoration:
-                    eachTodo.completed === true ? "line-through" : "",
-                }}
-                key={index}
-              >
-                {eachTodo.content}
-              </li>
+              <li className={eachTodo.completed===true?"line":""} key={index}> {eachTodo.content}</li>
               <div>
                 <Button type="primary" onClick={() => deleteHandler(index)}>
                   delete
@@ -66,11 +59,7 @@ const App = () => {
                 <Button type="primary" style={{ marginLeft: "10px" }}>
                   edit
                 </Button>
-                <Button
-                  onClick={() => completeHandler(index)}
-                  type="primary"
-                  style={{ marginLeft: "10px" }}
-                >
+                <Button  type="primary" style={{marginLeft:"10px"}}>
                   completed
                 </Button>
               </div>
