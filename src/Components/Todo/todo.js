@@ -1,33 +1,38 @@
 import React from "react";
 import { Button } from "antd";
-import "./App.css";
-const App = () => {
+
+const TodoComponent = () => {
   let [todo, setTodo] = React.useState([
-    { id: 1, content: "firstContent" ,completed:false},
-    { id: 2, content: "Secondcontent",completed:false },
+    { id: 1, content: "firstContent", completed: false, clicked: 0 },
+    { id: 2, content: "Secondcontent", completed: false, clicked: 0 },
   ]);
 
   const newTodo = {
     id: todo.length + 1,
     content: "",
-    completed:false
+    completed: false,
+    clicked: 0,
   };
+
+  React.useEffect(() => {
+    localStorage.setItem("todo", todo);
+    console.log(localStorage.getItem("todo"));
+  }, [todo]);
 
   const handleChange = (event) => {
     newTodo.content = event.target.value;
-    
   };
 
-  // const completeHandler=(todonew)=>{
-  //   const todoCpy=[...todo];
-  //   const changedTodo=todoCpy.find(eachTodo=>eachTodo.id===todonew.id);
-  //   changedTodo.completed=!changedTodo.completed
-  //   setTodo([...todo,changedTodo])
-  // }
+  const completeHandler = (index) => {
+    const todoCpy = [...todo];
+    todoCpy[index].completed = !todoCpy[index].completed;
+    todoCpy[index].clicked = todoCpy[index].clicked + 1;
+    setTodo(todoCpy);
+  };
 
   const clickHandler = () => {
     setTodo([...todo, newTodo]);
-    console.log(todo)
+    console.log(todo);
   };
 
   const deleteHandler = (id) => {
@@ -51,17 +56,34 @@ const App = () => {
                 justifyContent: "space-around",
               }}
             >
-              <li className={eachTodo.completed===true?"line":""} key={index}> {eachTodo.content}</li>
+              <li
+                style={{
+                  textDecoration:
+                    eachTodo.completed === true ? "line-through" : "",
+                }}
+                key={index}
+              >
+                {eachTodo.content}
+              </li>
               <div>
                 <Button type="primary" onClick={() => deleteHandler(index)}>
                   delete
                 </Button>
-                <Button type="primary" style={{ marginLeft: "10px" }}>
+                <Button
+                  onClick={clickHandler}
+                  type="primary"
+                  style={{ marginLeft: "10px" }}
+                >
                   edit
                 </Button>
-                <Button  type="primary" style={{marginLeft:"10px"}}>
+                <Button
+                  onClick={() => completeHandler(index)}
+                  type="primary"
+                  style={{ marginLeft: "10px" }}
+                >
                   completed
                 </Button>
+                <span style={{ marginLeft: "5px" }}>{eachTodo.clicked}</span>
               </div>
             </div>
           );
@@ -74,4 +96,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default TodoComponent;
